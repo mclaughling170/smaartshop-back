@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: SwaggerBootstrapUi-Demo
+  #jdbc配置
+  datasource:
+    dynamic:
+      primary: paramcloud #设置默认的数据源或者数据源组,默认值即为master
+      strict: true #设置严格模式,默认false不启动. 启动后在未匹配到指定数据源时候回抛出异常,不启动会使用默认数据源.
+      datasource:
+        paramcloud:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://rm-wz934rzs51tf639xj.mysql.rds.aliyuncs.com:3306/paramcloud?useSSL=false&&zeroDateTimeBehavior=convertToNull
+          username: stage
+          password: LLasd_x57x
+        sensordata:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://rm-wz934rzs51tf639xj.mysql.rds.aliyuncs.com:3306/sensordata?useSSL=false&&zeroDateTimeBehavior=convertToNull
+          username: stage
+          password: LLasd_x57x
+        smartbasic:
+          driver-class-name: com.mysql.jdbc.Driver
+          url: jdbc:mysql://rm-wz934rzs51tf639xj.mysql.rds.aliyuncs.com:3306/smartbasic?useSSL=false&&zeroDateTimeBehavior=convertToNull
+          username: stage
+          password: LLasd_x57x
+#mybatis配置
+mybatis:
+  #映射文件路径
+  mapper-locations: classpath:mapper/*.xml
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

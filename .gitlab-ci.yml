@@ -1,0 +1,52 @@
+cache:
+  untracked: true
+
+stages:
+  - setup
+  - test
+  - deploy
+  - deploy_stage
+  - release
+setup:
+  stage: setup
+  only:
+    - branches
+  tags:
+    - office
+  script:
+    mvn package -Dmaven.test.skip=true
+test:
+  stage: test
+  only:
+    - branches
+  tags:
+    - office
+  script:
+    - echo "test success"
+deploy:
+  stage: deploy
+  only:
+    - develop
+  tags:
+    - office
+  script:
+    - rsync -av target/smartmanger-1.0-SNAPSHOT.jar www@10.10.1.61:/www/app/java/smartsecurity/
+    - ssh www@10.10.1.61 "sudo /usr/bin/supervisorctl restart smartsecurity"
+deploy_stage:
+  stage: deploy_stage
+  only:
+    - stage
+  tags:
+    - office
+  script:
+    - rsync -av target/smartmanger-1.0-SNAPSHOT.jar www@10.8.228.105:/www/app/java/smartsecurity/
+    - ssh www@10.8.228.105 "sudo /usr/bin/supervisorctl restart smartsecurity"
+release:
+  stage: release
+  only:
+    - tags
+  tags:
+    - office
+  script:
+    - rsync -av target/smartmanger-1.0-SNAPSHOT.jar www@10.9.8.187:/www/app/java/smartsecurity/
+    - ssh www@10.9.8.187 "sudo /usr/bin/supervisorctl restart smartsecurity"
