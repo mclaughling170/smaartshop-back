@@ -1,6 +1,6 @@
 spring:
   application:
-    name: SwaggerBootstrapUi-Demo
+    name: smartsecurity
   #jdbc配置
   datasource:
     dynamic:
