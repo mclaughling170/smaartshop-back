@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean;
 import com.param.smartsecurity.config.dynamicdatasource.CommonEnum;
 import com.param.smartsecurity.config.dynamicdatasource.DynamicDataSource;
+import com.param.smartsecurity.utils.MyMetaObjectHandler;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
@@ -25,10 +26,18 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
-@EnableTransactionManagement //开启事务
+
+
+/**
+ * @Author Mc QiLing
+ * @Date 2020/11/9 4:10 下午
+ * @Version 1.0
+ */
+@EnableTransactionManagement
 @Configuration
-@MapperScan("com.system.domain.mapper.db*")
+@MapperScan("com.param.smartsecurity.mapper.*")
 public class MybatisPlusConfig {
+
     /**
      * 分页插件
      */
@@ -37,10 +46,10 @@ public class MybatisPlusConfig {
         return new PaginationInterceptor();
     }
 
-//    @Primary
+
     @Bean(name = "master")
     @ConfigurationProperties(prefix = "spring.datasource.druid.master")
-    public DataSource db1() {
+    public DataSource master() {
         return DruidDataSourceBuilder.create().build();
     }
 
@@ -60,7 +69,7 @@ public class MybatisPlusConfig {
     public DataSource multipleDataSource(@Qualifier("master") DataSource db1,
                                          @Qualifier("db2") DataSource db2) {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();
-        Map<Object, Object> targetDataSources = new HashMap<>();
+        Map<Object, Object> targetDataSources = new HashMap<>(16);
         targetDataSources.put(CommonEnum.DB1.getValue(), db1);
         targetDataSources.put(CommonEnum.DB2.getValue(), db2);
         dynamicDataSource.setTargetDataSources(targetDataSources);
@@ -72,7 +81,7 @@ public class MybatisPlusConfig {
     @Bean("sqlSessionFactory")
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         MybatisSqlSessionFactoryBean sqlSessionFactory = new MybatisSqlSessionFactoryBean();
-        sqlSessionFactory.setDataSource(multipleDataSource(db1(), db2()));
+        sqlSessionFactory.setDataSource(multipleDataSource(master(), db2()));
         // 设置默认需要扫描的 xml 文件
         sqlSessionFactory.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:mapper/*.xml"));
 		//其他配置项
@@ -83,7 +92,7 @@ public class MybatisPlusConfig {
         configuration.setCacheEnabled(false);
         configuration.setCallSettersOnNulls(true);
         sqlSessionFactory.setConfiguration(configuration);
-        sqlSessionFactory.setTypeAliasesPackage("com.intyt.jcyy.system.domain");
+        sqlSessionFactory.setTypeAliasesPackage("com.param.smartsecurity.entity");
         // 数据库查询结果驼峰式返回
         sqlSessionFactory.setObjectWrapperFactory(new MybatisMapWrapperFactory());
         // 添加分页功能
@@ -106,7 +115,7 @@ public class MybatisPlusConfig {
     public GlobalConfig globalConfiguration() {
     	// 自动填充创建时间和更新时间（MyMetaObjectHandler的实现参考 “MyBatis Plus 的自动填充功能” 博客）
         GlobalConfig conf = new GlobalConfig();
-        //conf.setMetaObjectHandler(new MyMetaObjectHandler());
+        conf.setMetaObjectHandler(new MyMetaObjectHandler());
         return conf;
     }
 

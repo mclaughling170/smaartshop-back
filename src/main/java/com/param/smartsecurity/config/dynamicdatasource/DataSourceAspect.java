@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 @Aspect
 public class DataSourceAspect {
 
-    @Before("execution(* com.param.smartsecurity.service.impl.*.*(..)) && @annotation(com.param.smartsecurity.config.dynamicdatasource.MyDataSource)")
+    @Before("execution(* com.param.smartsecurity.service.impl..*.*(..)) && @annotation(com.param.smartsecurity.config.dynamicdatasource.MyDataSource)")
     public void before(JoinPoint joinPoint) {
     	// execution 中配置的是服务实现类 & MyDataSource的包路径
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -47,7 +47,7 @@ public class DataSourceAspect {
     /**
      * 服务类的方法结束后，会清除数据源，此时会变更为默认的数据源
      **/
-    @After("execution(* com.param.smartsecurity.service.impl.*.*(..)) && @annotation(com.param.smartsecurity.config.dynamicdatasource.MyDataSource)")
+    @After("execution(* com.param.smartsecurity.service.impl..*.*(..)) && @annotation(com.param.smartsecurity.config.dynamicdatasource.MyDataSource)")
     public void after(JoinPoint point){
     	// execution 中配置的是服务实现类 & MyDataSource的包路径
         DataSourceContextHolder.clearDbType();

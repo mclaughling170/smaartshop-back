@@ -26,6 +26,8 @@ public class CodeGenerator {
         String projectPath = System.getProperty("user.dir");
         //打包文件夹
         gc.setOutputDir(projectPath + "/src/main/java");
+
+        gc.setActiveRecord(true);
         //作者
         gc.setAuthor("Mc_liao");
         //是否打开输出目录
@@ -36,13 +38,15 @@ public class CodeGenerator {
         mpg.setGlobalConfig(gc);
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://10.8.228.104:3306/paramcloud?useUnicode=true&useSSL=false&characterEncoding=utf8");
+
+        //dsc.setUrl("jdbc:mysql://127.0.0.1:3306/smartsecurity?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        //dsc.setUrl("jdbc:mysql://10.8.228.104:3306/paramcloud?useUnicode=true&useSSL=false&characterEncoding=utf8");
         //dsc.setUrl("jdbc:mysql://10.8.228.104:3306/sensordata?useUnicode=true&useSSL=false&characterEncoding=utf8");
         //dsc.setUrl("jdbc:mysql://10.8.228.104:3306/smartbasic?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public"); PostgreSQL schemaName
         dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("dev");
-        dsc.setPassword("LLasd_x57x");
+        dsc.setUsername("root");
+        dsc.setPassword("123456");
         mpg.setDataSource(dsc);
 
         // 包配置
@@ -98,7 +102,7 @@ public class CodeGenerator {
 
         // 配置自定义输出模板
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-         //templateConfig.setEntity("templates/entity2.java");
+         templateConfig.setEntity("/templates/entity.java.vm");
         // templateConfig.setService();
         // templateConfig.setController();
         templateConfig.setXml(null);
@@ -108,7 +112,8 @@ public class CodeGenerator {
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-        //strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
+        strategy.setSuperEntityClass("com.param.smartsecurity.entity.basic.BaseEntity");
+
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
         // 公共父类
@@ -116,7 +121,7 @@ public class CodeGenerator {
         // 写于父类中的公共字段
         //strategy.setSuperEntityColumns("id");
         // 表名称 多个表用 "," 隔开
-        strategy.setInclude("lsd_page".split(","));
+        strategy.setInclude("lj_user,lj_role,lj_department".split(","));
         strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix(pc.getModuleName() + "_");
         mpg.setStrategy(strategy);

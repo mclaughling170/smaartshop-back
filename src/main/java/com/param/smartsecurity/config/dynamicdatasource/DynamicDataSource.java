@@ -8,6 +8,7 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  * @Date 2020/11/9 4:10 下午
  * @Version 1.0
  */
+
 @Slf4j
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
@@ -17,4 +18,5 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
         log.debug("当前使用数据源:{}", datasource);
         return datasource;
     }
+
 }

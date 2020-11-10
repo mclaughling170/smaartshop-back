@@ -5,8 +5,6 @@ package com.param.smartsecurity.config.dynamicdatasource;
  * @Date 2020/11/9 4:10 下午
  * @Version 1.0
  */
-
-
 public enum CommonEnum {
 
     /**
