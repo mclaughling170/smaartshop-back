@@ -1,7 +1,5 @@
 package com.param.smartsecurity.manager;
 
-import com.param.smartsecurity.task.My2Job;
-import com.param.smartsecurity.task.MyJob;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -45,15 +43,13 @@ public class QuartzManager {
      * @param scheduler
      */
     private void startJobTask(Scheduler scheduler) throws SchedulerException {
-        JobDetail jobDetail= JobBuilder.newJob(MyJob.class).withIdentity(JOB1,GROUP1).build();
-        JobDetail jobDetail2= JobBuilder.newJob(My2Job.class).withIdentity(JOB2,GROUP1).build();
+        //JobDetail jobDetail= JobBuilder.newJob(MyJob.class).withIdentity(JOB1,GROUP1).build();
         CronScheduleBuilder cronScheduleBuilder=CronScheduleBuilder.cronSchedule(DEFAULT_CRON);
         CronTrigger cronTrigger=TriggerBuilder.newTrigger().withIdentity(JOB1,GROUP1)
                 .withSchedule(cronScheduleBuilder).build();
         CronTrigger cronTrigger2=TriggerBuilder.newTrigger().withIdentity(JOB2,GROUP1)
                 .withSchedule(cronScheduleBuilder).build();
-        scheduler.scheduleJob(jobDetail,cronTrigger);
-        scheduler.scheduleJob(jobDetail2,cronTrigger2);
+        //scheduler.scheduleJob(jobDetail,cronTrigger);
     }
 
 

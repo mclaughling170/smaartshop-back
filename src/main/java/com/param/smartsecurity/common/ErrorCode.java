@@ -6,12 +6,12 @@
  */
 package com.param.smartsecurity.common;
 
-/***
- *
- * @since:cloud-ims 1.0
- * @author <a href="mailto:xiaoymin@foxmail.com">xiaoymin@foxmail.com</a> 
- * 2018/07/25 10:19
+/**
+ * @Author Mc QiLing
+ * @Date 2020/11/9 4:10 下午
+ * @Version 1.0
  */
+
 public enum ErrorCode {
 
     SUCCESS(200,"成功"),FAIL(500,"失败");
